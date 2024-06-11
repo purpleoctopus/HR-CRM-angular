@@ -1,0 +1,33 @@
+
+    <h2 class="text-2xl font-bold mb-4">Запити на схвалення</h2>
+  
+    <form [formGroup]="searchForm" class="mb-4">
+      <label for="search" class="block text-sm font-medium text-gray-700">Пошук за ім'ям:</label>
+      <input id="search" formControlName="name" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </form>
+  
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th (click)="sortApprovalRequests('name')" class="cursor-pointer px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ім'я</th>
+            <th (click)="sortApprovalRequests('type')" class="cursor-pointer px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Тип</th>
+            <th (click)="sortApprovalRequests('date')" class="cursor-pointer px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата</th>
+            <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дії</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @for (request of filteredApprovalRequests; track $index) {
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ request.name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ request.type }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ request.date }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <button (click)="approveRequest(request)" class="text-green-600 hover:text-green-900">Схвалити</button>
+              <button (click)="rejectRequest(request)" class="text-red-600 hover:text-red-900 ml-4">Відхилити</button>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
