@@ -1,7 +1,7 @@
-    <h2 class="text-2xl font-bold mb-4 text-orange-500">Список працівників</h2>
+    <h2 class="text-2xl font-bold mb-4 text-black">Employee List</h2>
   
     <form [formGroup]="searchForm" class="mb-4">
-        <label for="search" class="block text-sm font-medium text-black">Пошук за ім'ям:</label>
+        <label for="search" class="block text-sm font-medium text-black">Search by name:</label>
         <input id="search" formControlName="name" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
     </form>
   
@@ -9,10 +9,10 @@
         <table class="min-w-full bg-white border border-gray-300">
             <thead class="bg-orange-50">
                 <tr>
-                    <th (click)="sortEmployees('name')" class="cursor-pointer px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-black uppercase tracking-wider">Ім'я</th>
-                    <th (click)="sortEmployees('position')" class="cursor-pointer px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-black uppercase tracking-wider">Посада</th>
-                    <th (click)="sortEmployees('department')" class="cursor-pointer px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-black uppercase tracking-wider">Відділ</th>
-                    <th class="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-black uppercase tracking-wider">Дії</th>
+                    <th (click)="sortEmployees('name')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ім'я</th>
+                    <th (click)="sortEmployees('position')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Посада</th>
+                    <th (click)="sortEmployees('department')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Відділ</th>
+                    <th class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Дії</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">

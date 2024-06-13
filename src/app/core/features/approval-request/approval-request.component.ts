@@ -1,22 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ApprovalRequest } from './models/approval-request.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-approval-request',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './approval-request.component.html',
   styleUrl: './approval-request.component.css'
 })
 export class ApprovalRequestComponent implements OnInit {
-  approvalRequests: any[] = [];
-  filteredApprovalRequests: any[] = [];
+  approvalRequests: ApprovalRequest[] = [];
+  filteredApprovalRequests: ApprovalRequest[] = [];
   searchForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.searchForm = this.fb.group({
       name: ['']
     });
+    this.approvalRequests.push({id: "1", approver:"Denys", comment:"Today", leaverequest: "2"});
   }
 
   ngOnInit(): void {
@@ -25,6 +28,7 @@ export class ApprovalRequestComponent implements OnInit {
   }
 
   loadApprovalRequests(): void {
+    this.filteredApprovalRequests=this.approvalRequests;
     /*this.approvalRequestService.getApprovalRequests().subscribe(data => {
       this.approvalRequests = data;
       this.filteredApprovalRequests = data;
@@ -32,13 +36,11 @@ export class ApprovalRequestComponent implements OnInit {
   }
 
   sortApprovalRequests(column: string): void {
-    this.filteredApprovalRequests.sort((a, b) => (a[column] > b[column]) ? 1 : -1);
+    //this.filteredApprovalRequests.sort((a, b) => (a[column] > b[column]) ? 1 : -1);
   }
 
   filterApprovalRequests(searchTerm: string): void {
-    this.filteredApprovalRequests = this.approvalRequests.filter(request => 
-      request.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    
   }
 
   approveRequest(request: any): void {
