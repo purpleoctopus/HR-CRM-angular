@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Employee } from './models/employee.model';
+import { EmployeeService } from '../../../services/employee.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-manager',
@@ -9,11 +12,12 @@ import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './employee-manager.component.css'
 })
 export class EmployeeManagerComponent implements OnInit {
-  employees: any[] = [];
-  filteredEmployees: any[] = [];
+  employees: Employee[] = [];
+  filteredEmployees: Employee[] = [];
   searchForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private router: Router,private service: EmployeeService, private fb: FormBuilder) {
+    this.employees = service.employees;
     this.searchForm = this.fb.group({
       name: ['']
     });
@@ -32,13 +36,18 @@ export class EmployeeManagerComponent implements OnInit {
   }
 
   sortEmployees(column: string): void {
-    this.filteredEmployees.sort((a, b) => (a[column] > b[column]) ? 1 : -1);
+    //this.filteredEmployees.sort((a, b) => (a[column] > b[column]) ? 1 : -1);
   }
 
   filterEmployees(searchTerm: string): void {
-    this.filteredEmployees = this.employees.filter(employee => 
+    /*this.filteredEmployees = this.employees.filter(employee => 
       employee.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    );*/
+  }
+
+  openEmployee(request: number): void{
+    this.service.selected = request;
+    this.router.navigate(["/employee-detail"]);
   }
 
   addEmployee(employee: any): void {

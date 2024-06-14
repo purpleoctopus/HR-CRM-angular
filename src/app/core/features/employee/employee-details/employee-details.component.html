@@ -1,0 +1,53 @@
+<div class="p-4">
+  <h2 class="text-2xl font-bold mb-4">Employee Details</h2>
+
+  <form [formGroup]="EmployeeForm" (ngSubmit)="save()">
+    <div class="mb-4">
+      <label for="id" class="block text-sm font-medium text-gray-700">ID:</label>
+      <input id="id" formControlName="id" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <div class="mb-4">
+      <label for="fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
+      <input id="fullname" formControlName="fullname" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <div class="mb-4">
+      <label for="subdivizion" class="block text-sm font-medium text-gray-700">Subdivizion:</label>
+      <select id="subdivizion" formControlName="subdivizion" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          @for (subdiv of subdivizions; track $index) {
+          <option [value]="subdiv">{{ subdiv }}</option>
+          }
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="position" class="block text-sm font-medium text-gray-700">Position:</label>
+      <select id="position" formControlName="position" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        @for (option of position; track $index) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+    </div>
+    <div class="mb-4">
+      <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
+      <select id="status" formControlName="status" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        @for (option of statusOptions; track $index) {
+          <option [value]="option">{{option}}</option>
+        }
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="peoplepartner" class="block text-sm font-medium text-gray-700">People Partner:</label>
+      <input id="peoplepartner" formControlName="peoplepartner" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <div class="mb-4">
+      <label for="ooo_balance" class="block text-sm font-medium text-gray-700">Available Out Of Office Days:</label>
+      <input id="ooo_balance" formControlName="ooo_balance" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+  </form>
+</div>

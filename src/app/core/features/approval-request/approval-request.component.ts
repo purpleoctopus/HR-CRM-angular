@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ApprovalRequest } from './models/approval-request.model';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ApprovalRequestService } from '../../../services/approval-request.service';
 
 @Component({
   selector: 'app-approval-request',
@@ -11,15 +12,15 @@ import { RouterModule } from '@angular/router';
   styleUrl: './approval-request.component.css'
 })
 export class ApprovalRequestComponent implements OnInit {
-  approvalRequests: ApprovalRequest[] = [];
+  approvalRequests: ApprovalRequest[];
   filteredApprovalRequests: ApprovalRequest[] = [];
   searchForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private router: Router, private approvalRequestService: ApprovalRequestService, private fb: FormBuilder) {
     this.searchForm = this.fb.group({
       name: ['']
     });
-    this.approvalRequests.push({id: "1", approver:"Denys", comment:"Today", leaverequest: "2"});
+    this.approvalRequests = approvalRequestService.approvalrequests;
   }
 
   ngOnInit(): void {
@@ -41,6 +42,11 @@ export class ApprovalRequestComponent implements OnInit {
 
   filterApprovalRequests(searchTerm: string): void {
     
+  }
+
+  openRequest(request: number): void{
+    this.approvalRequestService.selected = request;
+    this.router.navigate(["/approval-requests-detail"]);
   }
 
   approveRequest(request: any): void {

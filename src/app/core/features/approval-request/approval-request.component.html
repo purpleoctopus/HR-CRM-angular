@@ -1,5 +1,5 @@
 
-    <h2 class="text-2xl font-bold mb-4 text-black">Approval List</h2>
+    <h2 class="text-2xl font-bold mb-4 text-black">Approval Requests List</h2>
   
     <form [formGroup]="searchForm" class="mb-4">
       <label for="search" class="block text-sm font-medium text-gray-700">Search by request number:</label>
@@ -27,7 +27,7 @@
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ request.status }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ request.comment }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-center">
-              <button routerLink="/approval-requests-detail" class="text-green-700 hover:text-green-900 px-3">Open</button>
+              <button (click)="openRequest($index)" class="text-green-700 hover:text-green-900 px-3">Open</button>
               <button (click)="approveRequest(request)" class="text-green-600 hover:text-green-900 px-3">Approve</button>
               <button (click)="rejectRequest(request)" class="text-red-600 hover:text-red-900 px-3">Reject</button>
             </td>

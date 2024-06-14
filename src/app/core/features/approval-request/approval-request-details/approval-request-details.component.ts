@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ApprovalRequestService } from '../../../../services/approval-request.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-approval-request-details',
@@ -9,19 +11,18 @@ import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './approval-request-details.component.css'
 })
 export class ApprovalRequestDetailsComponent implements OnInit {
-  approvalRequestId: string = '';
   approvalRequestForm: FormGroup;
   employees:any[] = [];
   leaveRequests:any[] = [];
   statusOptions = ['New', 'Approved', 'Rejected'];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private router: Router,private service: ApprovalRequestService, private fb: FormBuilder) {
     this.approvalRequestForm = this.fb.group({
-      id: [{ value: this.approvalRequestId, disabled: true }],
-      approver: [''],
-      leaveRequest: [''],
-      status: [{ value: 'New', disabled: false }],
-      comment: ['']
+      id: [{ value: service.approvalrequests.at(service.selected)?.id, disabled: true }],
+      approver: [service.approvalrequests.at(service.selected)?.approver],
+      leaveRequest: [service.approvalrequests.at(service.selected)?.leaverequest],
+      status: [{ value: service.approvalrequests.at(service.selected)?.status, disabled: false }],
+      comment: [service.approvalrequests.at(service.selected)?.comment]
     });
   }
 
@@ -47,8 +48,8 @@ export class ApprovalRequestDetailsComponent implements OnInit {
 
   save(): void {
     const updatedApprovalRequest = this.approvalRequestForm.getRawValue();
-    /*this.approvalRequestService.updateApprovalRequest(this.approvalRequestId, updatedApprovalRequest).subscribe(() => {
-      // Handle success
-    });*/
+    this.service.approvalrequests[this.service.selected] = updatedApprovalRequest;
+    this.service.selected = -1;
+    this.router.navigate(["/approval-requests"]);
   }
 }
