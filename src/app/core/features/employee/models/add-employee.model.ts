@@ -1,5 +1,6 @@
-export interface Employee{
-    id: string,
+import { Employee } from "./employee.model";
+
+export interface AddEmployee{
     fullName: string,
     subdivizion: string,
     position: string,

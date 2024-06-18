@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { EmployeeService } from '../../../../services/employee.service';
+import { EmployeeService } from '../../../../services/features/employee.service';
 import { Router } from '@angular/router';
 import { Employee } from '../models/employee.model';
 
@@ -13,21 +13,19 @@ import { Employee } from '../models/employee.model';
 })
 export class EmployeeDetailsComponent implements OnInit {
   EmployeeForm: FormGroup;
-  employee?:Employee;
   statusOptions : string[]= ['Active', 'Inactive'];
   subdivizions : string[]= ["HR","IT","Finance"];
-  position : string[]= ['Manager', 'Developer', 'Analyst'];
+  position : string[]= ['Employee', 'ProjectManager', 'HRmanager'];
 
   constructor(private router: Router, private service: EmployeeService, private fb: FormBuilder) {
-    this.employee = service.employees.at(service.selected);
     this.EmployeeForm = this.fb.group({
-      id: [{ value: this.service.employees.at(this.service.selected)?.id, disabled: true}],
-      fullname: [{value: this.service.employees.at(this.service.selected)?.fullName, disabled: true}],
-      subdivizion: [{value: this.service.employees.at(this.service.selected)?.subdivizion}],
-      position: [{value:this.service.employees.at(this.service.selected)?.position}],
-      status: [{value:this.service.employees.at(this.service.selected)?.status}],
-      peoplepartner: [this.service.employees.at(this.service.selected)?.peoplePartnerId],
-      ooo_balance: [{value: this.service.employees.at(this.service.selected)?.ooO_balance, disabled: true}]
+      id: { value: this.service.employees.at(this.service.selected)?.id, disabled: true},
+      fullname: {value: this.service.employees.at(this.service.selected)?.fullName, disabled: false},
+      subdivizion: {value: this.service.employees.at(this.service.selected)?.subdivizion},
+      position: {value:this.service.employees.at(this.service.selected)?.position, disabled: true},
+      status: {value:this.service.employees.at(this.service.selected)?.status},
+      peoplepartnerid: {value : this.service.employees.at(this.service.selected)?.peoplePartnerId, disabled: true},
+      ooo_balance: {value: this.service.employees.at(this.service.selected)?.ooO_balance, disabled: true}
     });
   }
 
@@ -35,36 +33,23 @@ export class EmployeeDetailsComponent implements OnInit {
     await this.service.getDataAsync();
 
     this.EmployeeForm.setValue({
-      id: [this.service.employees.at(this.service.selected)?.id],
-      fullname: [this.service.employees.at(this.service.selected)?.fullName],
-      subdivizion: [this.service.employees.at(this.service.selected)?.subdivizion],
-      position: [this.service.employees.at(this.service.selected)?.position],
-      status: [this.service.employees.at(this.service.selected)?.status],
-      peoplepartner: [this.service.employees.at(this.service.selected)?.peoplePartnerId],
-      ooo_balance: [this.service.employees.at(this.service.selected)?.ooO_balance]
+      id: this.service.employees.at(this.service.selected)?.id,
+      fullname: this.service.employees.at(this.service.selected)?.fullName,
+      subdivizion: this.service.employees.at(this.service.selected)?.subdivizion,
+      position: this.service.employees.at(this.service.selected)?.position,
+      status: this.service.employees.at(this.service.selected)?.status,
+      peoplepartnerid: this.service.employees.at(this.service.selected)?.peoplePartnerId,
+      ooo_balance: this.service.employees.at(this.service.selected)?.ooO_balance
     });
     this.EmployeeForm.controls['subdivizion'].setValue(this.service.employees.at(this.service.selected)?.subdivizion);
     this.EmployeeForm.controls['status'].setValue(this.service.employees.at(this.service.selected)?.status);
     this.EmployeeForm.controls['position'].setValue(this.service.employees.at(this.service.selected)?.position);
   }
 
-  loadApprovalRequest(): void {
-    /*this.approvalRequestService.getApprovalRequestById(this.approvalRequestId).subscribe(data => {
-      this.approvalRequestForm.patchValue(data);
-    });*/
-  }
-
-  loadEmployees(): void {
-    // Implement the logic to load employees from EmployeeService
-  }
-
-  loadLeaveRequests(): void {
-    // Implement the logic to load leave requests from LeaveRequestService
-  }
-
-  save(): void {
-    const updatedEmployee = this.EmployeeForm.getRawValue();
+  async save(): Promise<void> {
+    let updatedEmployee : Employee = this.EmployeeForm.getRawValue();
     this.service.employees[this.service.selected] = updatedEmployee;
+    await this.service.updateDataAsync(updatedEmployee);
     this.service.selected = -1;
     this.router.navigate(["/employees"]);
   }

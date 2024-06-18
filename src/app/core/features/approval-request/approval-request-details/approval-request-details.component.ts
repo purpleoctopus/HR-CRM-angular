@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ApprovalRequestService } from '../../../../services/approval-request.service';
+import { ApprovalRequestService } from '../../../../services/features/approval-request.service';
 import { Router } from '@angular/router';
 
 @Component({

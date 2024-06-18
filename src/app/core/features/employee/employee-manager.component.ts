@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Employee } from './models/employee.model';
-import { EmployeeService } from '../../../services/employee.service';
+import { EmployeeService } from '../../../services/features/employee.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,22 +17,16 @@ export class EmployeeManagerComponent implements OnInit {
   searchForm: FormGroup;
 
   constructor(private router: Router,private service: EmployeeService, private fb: FormBuilder) {
-    this.employees = service.employees;
     this.searchForm = this.fb.group({
       name: ['']
     });
   }
 
-  ngOnInit(): void {
-    this.loadEmployees();
+  async ngOnInit(): Promise<void> {
+    await this.service.getDataAsync();
+    this.employees = this.service.employees;
+    this.filteredEmployees = this.employees;
     this.searchForm.get('name')?.valueChanges.subscribe(value => this.filterEmployees(value));
-  }
-
-  loadEmployees(): void {
-    /*this.employeeService.getEmployees().subscribe((data: any[]) => {
-      this.employees = data;
-      this.filteredEmployees = data;
-    });*/
   }
 
   sortEmployees(column: string): void {
@@ -40,25 +34,26 @@ export class EmployeeManagerComponent implements OnInit {
   }
 
   filterEmployees(searchTerm: string): void {
-    /*this.filteredEmployees = this.employees.filter(employee => 
-      employee.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );*/
+    this.filteredEmployees = this.employees.filter(employee => 
+      employee.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }
 
+  addEmployee(){
+    this.router.navigate(["/employee-add"]);
+  }
   openEmployee(request: number): void{
     this.service.selected = request;
     this.router.navigate(["/employee-detail"]);
   }
 
-  addEmployee(employee: any): void {
-    //this.employeeService.addEmployee(employee).subscribe(() => this.loadEmployees());
-  }
-
-  updateEmployee(employee: any): void {
-    //this.employeeService.updateEmployee(employee).subscribe(() => this.loadEmployees());
+  activateEmployee(employee: Employee): void {
+    employee.status = "Active";
+    this.service.updateDataAsync(employee);
   }
 
   deactivateEmployee(employee: any): void {
-    //this.employeeService.deactivateEmployee(employee).subscribe(() => this.loadEmployees());
+    employee.status = "Inactive";
+    this.service.updateDataAsync(employee);
   }
 }

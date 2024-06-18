@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ApprovalRequest } from './models/approval-request.model';
 import { Router, RouterModule } from '@angular/router';
-import { ApprovalRequestService } from '../../../services/approval-request.service';
+import { ApprovalRequestService } from '../../../services/features/approval-request.service';
 
 @Component({
   selector: 'app-approval-request',

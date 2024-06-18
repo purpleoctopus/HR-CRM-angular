@@ -5,6 +5,8 @@ import { LeaveRequestComponent } from './core/features/leave-request/leave-reque
 import { ApprovalRequestComponent } from './core/features/approval-request/approval-request.component';
 import { ApprovalRequestDetailsComponent } from './core/features/approval-request/approval-request-details/approval-request-details.component';
 import { EmployeeDetailsComponent } from './core/features/employee/employee-details/employee-details.component';
+import { EmployeeAddComponent } from './core/features/employee/employee-add/employee-add.component';
+import { LoginComponent } from './core/features/login/login.component';
 
 export const routes: Routes = [
     {
@@ -13,12 +15,20 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        path:'login',
+        component: LoginComponent
+    },
+    {
         path:'employees',
         component: EmployeeManagerComponent
     },
     {
         path:'employee-detail',
         component: EmployeeDetailsComponent
+    },
+    {
+        path:'employee-add',
+        component: EmployeeAddComponent
     },
     {
         path:'approval-requests',

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header-sidebar',
@@ -8,6 +9,11 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header-sidebar.component.html',
   styleUrl: './header-sidebar.component.css'
 })
-export class HeaderSidebarComponent {
-
+export class HeaderSidebarComponent implements OnInit {
+  username: string = "Login";
+  constructor(private service : AuthService) {
+  }
+  ngOnInit(): void {
+    this.service.username$.subscribe((response: string) => {this.username = response;})
+  }
 }
