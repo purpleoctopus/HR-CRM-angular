@@ -10,7 +10,7 @@
       <table class="min-w-full bg-white border border-gray-200">
         <thead class="bg-gray-50">
           <tr>
-            <th (click)="sortApprovalRequests('name')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">№</th>
+            <th (click)="sortApprovalRequests('name')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
             <th (click)="sortApprovalRequests('type')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Approver</th>
             <th (click)="sortApprovalRequests('date')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Request</th>
             <th (click)="sortApprovalRequests('name')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -21,15 +21,17 @@
         <tbody class="bg-white divide-y divide-gray-200">
             @for (request of approvalRequests; track $index) {
           <tr>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ $index }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ request.id }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ request.approverId }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ request.leaveRequestId }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ request.status }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ request.comment }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-center">
               <button (click)="openRequest($index)" class="text-green-700 hover:text-green-900 px-3">Open</button>
+              @if (request.status == "New") {
               <button (click)="approveRequest(request)" class="text-green-600 hover:text-green-900 px-3">Approve</button>
               <button (click)="rejectRequest(request)" class="text-red-600 hover:text-red-900 px-3">Reject</button>
+              }
             </td>
           </tr>
         }
