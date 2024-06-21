@@ -1,0 +1,45 @@
+<div class="p-4">
+    <h2 class="text-2xl font-bold mb-4">Create New Project</h2>
+  
+    <form [formGroup]="ProjectForm" (ngSubmit)="save()">
+      <div class="mb-4">
+        <label for="projectType" class="block text-sm font-medium text-gray-700">Project Type</label>
+        <select id="projectType" formControlName="projectType" [ngClass]="{'border-red-600': !projectType, 'border-gray-300': projectType}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            @for (item of projectTypes; track $index) {
+                <option>{{item}}</option>
+            }
+        </select>
+    </div>
+
+      <div class="mb-4">
+        <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+        <input id="startDate" formControlName="startDate" [ngClass]="{'border-red-600': !startDate, 'border-gray-300': startDate}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+
+      <div class="mb-4">
+        <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+        <input id="endDate" formControlName="endDate" [ngClass]="{'border-red-600': !endDate, 'border-gray-300': endDate}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+
+      <div class="mb-4">
+        <label for="projectManagerId" class="block text-sm font-medium text-gray-700">Project Manager</label>
+        <input id="projectManagerId" formControlName="projectManagerId" [ngClass]="{'border-red-600': !projectManager, 'border-gray-300': projectManager}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+  
+      <div class="mb-4">
+        <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
+        <input id="comment" formControlName="comment" [ngClass]="{'border-red-600': !comment, 'border-gray-300': comment}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+        <select id="status" formControlName="status" [ngClass]="{'border-red-600': !status, 'border-gray-300': status}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          @for (option of statusOptions; track $index) {
+            <option [value]="option">{{option}}</option>
+          }
+        </select>
+      </div>
+
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+    </form>
+  </div>

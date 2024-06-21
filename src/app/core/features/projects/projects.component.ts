@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ProjectService } from '../../../services/features/project.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { Project } from './models/project.model';
 
 @Component({
   selector: 'app-projects',
@@ -10,17 +14,23 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class ProjectsComponent implements OnInit {
   leaveRequests: any[] = [];
-  filteredProjects: any[] = [];
+  filteredProjects: Project[] = [];
   searchForm: FormGroup;
+  projects: Project[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private router: Router,private authService: AuthService, private service: ProjectService, private fb: FormBuilder) {
     this.searchForm = this.fb.group({
       name: ['']
     });
   }
 
-  ngOnInit(): void {
-    this.loadProjects();
+  async ngOnInit(): Promise<void> {
+    if(!this.authService.roles.includes('pm') && !this.authService.roles.includes('hr manager')){
+      this.router.navigate(['/no-access']);
+    }
+    await this.service.getDataAsync();
+    this.projects = this.service.projects;
+    this.filteredProjects = this.projects;
     this.searchForm.get('name')?.valueChanges.subscribe(value => this.filterProjects(value));
   }
 
@@ -36,10 +46,19 @@ export class ProjectsComponent implements OnInit {
   sortProjects(column: string) {
     
   }
-  deactivateProject(request: any) {
-    
+  deactivateProject(request: Project) {
+    request.status = "Inactive"
+    this.service.updateDataAsync(request)
   }
-  updateProject(request: any) {
-    
+  activateProject(request: Project) {
+    request.status = "Active"
+    this.service.updateDataAsync(request)
+  }
+  openProject(request: number) {
+    this.service.selected = request;
+    this.router.navigate(["/project-details"])
+  }
+  addProject(){
+    this.router.navigate(["/project-add"])
   }
 }

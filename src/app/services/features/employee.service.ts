@@ -21,7 +21,6 @@ export class EmployeeService {
     this.employees = await firstValueFrom(this.getEmployees());
   }
   async updateDataAsync(employee:Employee) : Promise<AddEmployee> {
-    console.log(employee)
     let request: AddEmployee = employee;
     let id: string = employee.id;
     return await firstValueFrom(this.updateEmployee(id,request));
@@ -30,6 +29,7 @@ export class EmployeeService {
     return this.http.post<Employee>(`${environment.apiUrl}/Account/register`, employee);
   }
   private updateEmployee(id: string,employee : AddEmployee):Observable<AddEmployee>{
+    console.log(employee); console.log(id)
     return this.http.put<AddEmployee>(`${environment.apiUrl}/Employee/${id}`, employee)
   }
   private getEmployees(): Observable<Employee[]>{

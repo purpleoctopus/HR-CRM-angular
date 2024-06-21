@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ApprovalRequestService } from '../../../../services/features/approval-request.service';
 import { Router } from '@angular/router';
+import { ApprovalRequest } from '../models/approval-request.model';
 
 @Component({
   selector: 'app-approval-request-details',
@@ -12,43 +13,35 @@ import { Router } from '@angular/router';
 })
 export class ApprovalRequestDetailsComponent implements OnInit {
   approvalRequestForm: FormGroup;
-  employees:any[] = [];
-  leaveRequests:any[] = [];
   statusOptions = ['New', 'Approved', 'Rejected'];
-
+  approvalRequests: ApprovalRequest[]= [];
   constructor(private router: Router,private service: ApprovalRequestService, private fb: FormBuilder) {
     this.approvalRequestForm = this.fb.group({
-      id: [{ value: service.approvalrequests.at(service.selected)?.id, disabled: true }],
-      approver: [service.approvalrequests.at(service.selected)?.approver],
-      leaveRequest: [service.approvalrequests.at(service.selected)?.leaverequest],
-      status: [{ value: service.approvalrequests.at(service.selected)?.status, disabled: false }],
-      comment: [service.approvalrequests.at(service.selected)?.comment]
+      id: { value: service.approvalRequests.at(service.selected)?.id, disabled: true },
+      approver: service.approvalRequests.at(service.selected)?.approverId,
+      leaveRequest: service.approvalRequests.at(service.selected)?.leaveRequestId,
+      status: { value: service.approvalRequests.at(service.selected)?.status, disabled: false },
+      comment: service.approvalRequests.at(service.selected)?.comment
     });
   }
 
-  ngOnInit(): void {
-    this.loadApprovalRequest();
-    this.loadEmployees();
-    this.loadLeaveRequests();
-  }
-
-  loadApprovalRequest(): void {
-    /*this.approvalRequestService.getApprovalRequestById(this.approvalRequestId).subscribe(data => {
-      this.approvalRequestForm.patchValue(data);
-    });*/
-  }
-
-  loadEmployees(): void {
-    // Implement the logic to load employees from EmployeeService
-  }
-
-  loadLeaveRequests(): void {
-    // Implement the logic to load leave requests from LeaveRequestService
+  async ngOnInit(): Promise<void> {
+    await this.service.getDataAsync();
+    let statusCheck : boolean = this.service.approvalRequests[this.service.selected].status != "New";
+    this.approvalRequests = this.service.approvalRequests;
+    this.approvalRequestForm = this.fb.group({
+      id: { value: this.service.approvalRequests.at(this.service.selected)?.id, disabled: true },
+      approver: { value: this.service.approvalRequests.at(this.service.selected)?.approverId, disabled: statusCheck },
+      leaveRequest: { value: this.service.approvalRequests.at(this.service.selected)?.leaveRequestId, disabled: statusCheck },
+      status: { value: this.service.approvalRequests.at(this.service.selected)?.status, disabled: false },
+      comment: { value: this.service.approvalRequests.at(this.service.selected)?.comment, disabled: statusCheck }
+    });
   }
 
   save(): void {
     const updatedApprovalRequest = this.approvalRequestForm.getRawValue();
-    this.service.approvalrequests[this.service.selected] = updatedApprovalRequest;
+    this.service.updateDataAsync(updatedApprovalRequest);
+    this.service.approvalRequests[this.service.selected] = updatedApprovalRequest;
     this.service.selected = -1;
     this.router.navigate(["/approval-requests"]);
   }

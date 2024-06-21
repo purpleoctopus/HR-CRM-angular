@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderSidebarComponent implements OnInit {
   username: string = "Login";
-  constructor(private service : AuthService) {
+  constructor(public service : AuthService) {
   }
   ngOnInit(): void {
     this.service.username$.subscribe((response: string) => {this.username = response;})

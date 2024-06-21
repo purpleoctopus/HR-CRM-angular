@@ -7,12 +7,26 @@ import { ApprovalRequestDetailsComponent } from './core/features/approval-reques
 import { EmployeeDetailsComponent } from './core/features/employee/employee-details/employee-details.component';
 import { EmployeeAddComponent } from './core/features/employee/employee-add/employee-add.component';
 import { LoginComponent } from './core/features/login/login.component';
+import { NoAccessComponent } from './core/no-access/no-access.component';
+import { HomePageComponent } from './core/home-page/home-page.component';
+import { ProjectDetailsComponent } from './core/features/projects/project-details/project-details.component';
+import { ProjectAddComponent } from './core/features/projects/project-add/project-add.component';
+import { LeaveRequestAddComponent } from './core/features/leave-request/leave-request-add/leave-request-add.component';
+import { LeaveRequestDetailsComponent } from './core/features/leave-request/leave-request-details/leave-request-details.component';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: '/employees',
+        redirectTo: '/home-page',
         pathMatch: 'full'
+    },
+    {
+        path:'home-page',
+        component: HomePageComponent
+    },
+    {
+        path:'no-access',
+        component: NoAccessComponent
     },
     {
         path:'login',
@@ -43,7 +57,23 @@ export const routes: Routes = [
         component: LeaveRequestComponent
     },
     {
+        path:'leave-request-add',
+        component: LeaveRequestAddComponent
+    },
+    {
+        path:'leave-request-details',
+        component: LeaveRequestDetailsComponent
+    },
+    {
         path:'projects',
         component: ProjectsComponent
+    },
+    {
+        path:'project-details',
+        component: ProjectDetailsComponent
+    },
+    {
+        path:'project-add',
+        component: ProjectAddComponent
     }
 ];

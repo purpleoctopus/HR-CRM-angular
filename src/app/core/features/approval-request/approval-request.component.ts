@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ApprovalRequest } from './models/approval-request.model';
 import { Router, RouterModule } from '@angular/router';
 import { ApprovalRequestService } from '../../../services/features/approval-request.service';
+import { AuthService } from '../../../services/auth.service';
+import { LeaveRequest } from '../leave-request/models/leave-request.model';
 
 @Component({
   selector: 'app-approval-request',
@@ -12,28 +14,22 @@ import { ApprovalRequestService } from '../../../services/features/approval-requ
   styleUrl: './approval-request.component.css'
 })
 export class ApprovalRequestComponent implements OnInit {
-  approvalRequests: ApprovalRequest[];
-  filteredApprovalRequests: ApprovalRequest[] = [];
+  approvalRequests: ApprovalRequest[] = [];
   searchForm: FormGroup;
 
-  constructor(private router: Router, private approvalRequestService: ApprovalRequestService, private fb: FormBuilder) {
+  constructor(private router: Router, private authService: AuthService, private service: ApprovalRequestService, private fb: FormBuilder) {
+    if(!this.authService.roles.includes('pm') && !this.authService.roles.includes('hr')){
+      this.router.navigate(['/no-access']);
+    }
     this.searchForm = this.fb.group({
       name: ['']
     });
-    this.approvalRequests = approvalRequestService.approvalrequests;
   }
 
-  ngOnInit(): void {
-    this.loadApprovalRequests();
+  async ngOnInit(): Promise<void> {
+    await this.service.getDataAsync();
+    this.approvalRequests = this.service.approvalRequests;
     this.searchForm.get('name')?.valueChanges.subscribe(value => this.filterApprovalRequests(value));
-  }
-
-  loadApprovalRequests(): void {
-    this.filteredApprovalRequests=this.approvalRequests;
-    /*this.approvalRequestService.getApprovalRequests().subscribe(data => {
-      this.approvalRequests = data;
-      this.filteredApprovalRequests = data;
-    });*/
   }
 
   sortApprovalRequests(column: string): void {
@@ -45,15 +41,33 @@ export class ApprovalRequestComponent implements OnInit {
   }
 
   openRequest(request: number): void{
-    this.approvalRequestService.selected = request;
+    this.service.selected = request;
     this.router.navigate(["/approval-requests-detail"]);
   }
 
-  approveRequest(request: any): void {
-    //this.approvalRequestService.approveRequest(request).subscribe(() => this.loadApprovalRequests());
+  async approveRequest(request: ApprovalRequest): Promise<void> {
+    let req : ApprovalRequest = {
+      id : request.id,
+      approverId: this.authService.employeeId,
+      leaveRequestId: request.leaveRequestId,
+      comment: request.comment,
+      status : "Approved"
+    };
+    console.log(req)
+    await this.service.updateDataAsync(req);
+    await this.service.getDataAsync();
   }
 
-  rejectRequest(request: any): void {
-    //this.approvalRequestService.rejectRequest(request).subscribe(() => this.loadApprovalRequests());
+  async rejectRequest(request: ApprovalRequest): Promise<void> {
+    let req : ApprovalRequest = {
+      id : request.id,
+      approverId: this.authService.employeeId,
+      leaveRequestId: request.leaveRequestId,
+      comment: request.comment,
+      status : "Rejected"
+    };
+    console.log(req)
+    await this.service.updateDataAsync(req);
+    await this.service.getDataAsync();
   }
 }

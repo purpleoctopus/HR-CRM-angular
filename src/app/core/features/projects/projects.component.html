@@ -1,32 +1,46 @@
-<h2 class="text-2xl font-bold mb-4 text-black">Projects List</h2>
+<div>
+    <h2 class="text-2xl font-bold mb-4 text-black">Project List</h2>
   
-<form [formGroup]="searchForm" class="mb-4">
-    <label for="search" class="block text-sm font-medium text-black">Search by request number:</label>
-    <input id="search" formControlName="name" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
-</form>
-
-<div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-300">
-        <thead class="bg-orange-50">
-            <tr>
-                <th (click)="sortProjects('name')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ім'я</th>
-                <th (click)="sortProjects('position')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Посада</th>
-                <th (click)="sortProjects('department')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Відділ</th>
-                <th class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Дії</th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            @for (employee of filteredProjects; track $index) {
+    <form [formGroup]="searchForm" class="mb-4">
+        <label for="search" class="block text-sm font-medium text-black">Search by name:</label>
+        <div class="flex">
+            <input id="search" formControlName="name" type="text" class="mt-1 inline w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+            <button (click)="addProject()" class="inline px-4 py-2 bg-green-500 rounded mx-3 text-white text-xl hover:bg-green-700 verdana">+</button>
+        </div>
+    </form>
+  
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead class="bg-gray-50">
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-black">{{ employee.name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-black">{{ employee.position }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-black">{{ employee.department }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button (click)="updateProject(employee)" class="text-orange-600 hover:text-orange-900">Оновити</button>
-                        <button (click)="deactivateProject(employee)" class="text-red-600 hover:text-red-900 ml-4">Деактивувати</button>
-                    </td>
+                    <th (click)="sortProjects('name')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                    <th (click)="sortProjects('name')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Project Type</th>
+                    <th (click)="sortProjects('position')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+                    <th (click)="sortProjects('department')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+                    <th (click)="sortProjects('department')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Project Manager</th>
+                    <th (click)="sortProjects('department')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Comment</th>
+                    <th (click)="sortProjects('department')" class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="cursor-pointer px-6 py-3 border border-gray-200 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @for (project of filteredProjects; track $index) {
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ project.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ project.projectType }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ project.startDate }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ project.endDate }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ project.projectManagerId }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ project.comment }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-200">{{ project.status }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-center">
+                            <button (click)="openProject($index)" class="text-green-700 hover:text-green-900 px-3">Open</button>
+                            <button (click)="activateProject(project)" class="text-orange-600 hover:text-orange-900 px-3">Activate</button>
+                            <button (click)="deactivateProject(project)" class="text-red-600 hover:text-red-900 px-3">Deactivate</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

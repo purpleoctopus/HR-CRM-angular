@@ -5,6 +5,7 @@ import { EmployeeService } from '../../../../services/features/employee.service'
 import { AddEmployee } from '../models/add-employee.model';
 import { CommonModule } from '@angular/common';
 import { RegisterModel } from '../models/register.model';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-employee-add',
@@ -27,7 +28,10 @@ export class EmployeeAddComponent {
   isPositionValid: boolean = true;
   isStatusValid: boolean = true;
 
-  constructor(private router: Router, private service: EmployeeService, private fb: FormBuilder) {
+  constructor(private router: Router, private authService: AuthService, private service: EmployeeService, private fb: FormBuilder) {
+    if(!this.authService.roles.includes('hr')){
+      this.router.navigate(['/no-access']);
+    }
     this.EmployeeForm = this.fb.group({
       username: "",
       email: "",
@@ -96,16 +100,8 @@ export class EmployeeAddComponent {
     }
     if(value.peoplePartnerId?.length > 0 && value.peoplePartnerId?.length < 36){
       this.isPartnerIdValid = false;
-      this.EmployeeForm.get('peoplePartnerId')?.valueChanges.subscribe(x =>
-        {
-          this.isPartnerIdValid = true;
-        }
-      )
       return false;
     }else{
-      if(value.peoplePartnerId.length == 0){
-        value.peoplePartnerId = "00000000-0000-0000-0000-000000000000";
-      }
       this.isPartnerIdValid = true;
     }
     return true;

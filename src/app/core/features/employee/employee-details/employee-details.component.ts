@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeService } from '../../../../services/features/employee.service';
 import { Router } from '@angular/router';
 import { Employee } from '../models/employee.model';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -17,14 +18,17 @@ export class EmployeeDetailsComponent implements OnInit {
   subdivizions : string[]= ["HR","IT","Finance"];
   position : string[]= ['Employee', 'ProjectManager', 'HRmanager'];
 
-  constructor(private router: Router, private service: EmployeeService, private fb: FormBuilder) {
+  constructor(private router: Router, private authService: AuthService, private service: EmployeeService, private fb: FormBuilder) {
+    if(!this.authService.roles.includes('pm') && !this.authService.roles.includes('hr manager')){
+      this.router.navigate(['/no-access']);
+    }
     this.EmployeeForm = this.fb.group({
       id: { value: this.service.employees.at(this.service.selected)?.id, disabled: true},
       fullname: {value: this.service.employees.at(this.service.selected)?.fullName, disabled: false},
       subdivizion: {value: this.service.employees.at(this.service.selected)?.subdivizion},
       position: {value:this.service.employees.at(this.service.selected)?.position, disabled: true},
       status: {value:this.service.employees.at(this.service.selected)?.status},
-      peoplepartnerid: {value : this.service.employees.at(this.service.selected)?.peoplePartnerId, disabled: true},
+      peoplepartnerid: {value : this.service.employees.at(this.service.selected)?.peoplePartnerId, disabled: false},
       ooo_balance: {value: this.service.employees.at(this.service.selected)?.ooO_balance, disabled: true}
     });
   }

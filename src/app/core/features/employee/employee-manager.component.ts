@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Employee } from './models/employee.model';
 import { EmployeeService } from '../../../services/features/employee.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-employee-manager',
@@ -16,13 +17,16 @@ export class EmployeeManagerComponent implements OnInit {
   filteredEmployees: Employee[] = [];
   searchForm: FormGroup;
 
-  constructor(private router: Router,private service: EmployeeService, private fb: FormBuilder) {
+  constructor(private router: Router,private authService: AuthService, private service: EmployeeService, private fb: FormBuilder) {
     this.searchForm = this.fb.group({
       name: ['']
     });
   }
 
   async ngOnInit(): Promise<void> {
+    if(!this.authService.roles.includes('pm') && !this.authService.roles.includes('hr manager')){
+      this.router.navigate(['/no-access']);
+    }
     await this.service.getDataAsync();
     this.employees = this.service.employees;
     this.filteredEmployees = this.employees;

@@ -3,30 +3,22 @@
   
     <form [formGroup]="approvalRequestForm" (ngSubmit)="save()">
       <div class="mb-4">
-        <label for="id" class="block text-sm font-medium text-gray-700">ID:</label>
+        <label for="id" class="block text-sm font-medium text-gray-700">ID</label>
         <input id="id" formControlName="id" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
       </div>
   
       <div class="mb-4">
-        <label for="approver" class="block text-sm font-medium text-gray-700">Схвалювач:</label>
-        <select id="approver" formControlName="approver" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            @for (employee of employees; track $index) {
-            <option [value]="employee.id">{{ employee.name }}</option>
-            }
-        </select>
+        <label for="approver" class="block text-sm font-medium text-gray-700">Approver Id</label>
+        <input id="approver" formControlName="approver" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
       </div>
   
       <div class="mb-4">
-        <label for="leaveRequest" class="block text-sm font-medium text-gray-700">Запит на відпустку:</label>
-        <select id="leaveRequest" formControlName="leaveRequest" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            @for (leaveRequest of leaveRequests; track $index) {
-            <option [value]="leaveRequest.id">{{ leaveRequest.type }}</option>
-            }
-        </select>
+        <label for="leaveRequest" class="block text-sm font-medium text-gray-700">Leave Request Id</label>
+        <input id="leaveRequest" formControlName="leaveRequest" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
       </div>
   
       <div class="mb-4">
-        <label for="status" class="block text-sm font-medium text-gray-700">Статус:</label>
+        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
         <select id="status" formControlName="status" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             @for (option of statusOptions; track $index) {
                 <option>{{option}}</option>
@@ -34,7 +26,7 @@
         </select>
       </div>
       <div class="mb-4">
-        <label for="comment" class="block text-sm font-medium text-gray-700">Коментар:</label>
+        <label for="comment" class="block text-sm font-medium text-gray-700">Comment:</label>
         <textarea id="comment" formControlName="comment" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
       </div>
   

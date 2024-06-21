@@ -1,7 +1,7 @@
 export interface ApprovalRequest{
     id: string,
-    approver: string,
-    leaverequest: string,
+    approverId: string | null,
+    leaveRequestId: string,
     status?: string,
     comment: string
 }

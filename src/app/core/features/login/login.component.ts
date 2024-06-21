@@ -23,7 +23,7 @@ export class LoginComponent {
     let loginData: LoginModel = this.LoginForm.getRawValue();
     this.service.login(loginData).subscribe(response=> {
       if (response && response.token) {
-        this.router.navigate(["/employees"]);
+        this.router.navigate(["/home-page"]);
       }else{
         console.error("Login error");
       }
